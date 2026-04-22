@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caso de Estudio · WMS Gestión de Almacén | José Miguel Castrillo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08111f; --panel: #101c31; --panel-2: #13223d;
+      --line: rgba(255,255,255,.08); --text: #e8eef8; --muted: #9fb0c9;
+      --primary: #4cc9f0; --primary-2: #2aa5ff; --accent: #22c55e;
+      --shadow: 0 20px 60px rgba(0,0,0,.35); --max: 900px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(76,201,240,.14), transparent 22%),
+        radial-gradient(circle at 85% 10%, rgba(34,197,94,.12), transparent 18%),
+        linear-gradient(180deg, #07101d 0%, #0b1320 100%);
+      color: var(--text); overflow-x: hidden; line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+    .noise { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .045; background-image: radial-gradient(circle at 20% 20%, #fff 1px, transparent 1px), radial-gradient(circle at 80% 80%, #fff 1px, transparent 1px); background-size: 120px 120px, 180px 180px; }
+    .site-header { position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(14px); background: rgba(8,17,31,.55); border-bottom: 1px solid var(--line); }
+    .nav { width: min(calc(100% - 40px), 1200px); margin-inline: auto; min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-weight: 800; letter-spacing: -.04em; background: linear-gradient(135deg, rgba(76,201,240,.22), rgba(34,197,94,.18)); border: 1px solid var(--line); color: #fff; flex-shrink: 0; }
+    .brand-text strong { display: block; font-size: .98rem; letter-spacing: -.02em; }
+    .brand-text span { display: block; color: var(--muted); font-size: .82rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-weight: 700; font-size: .92rem; cursor: pointer; white-space: nowrap; transition: transform .25s, box-shadow .25s, background .25s, border-color .25s; }
+    @media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
+    .btn-secondary { background: rgba(255,255,255,.03); color: var(--text); border-color: var(--line); }
+    .btn-secondary:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary-2), var(--primary)); color: #06111c; box-shadow: 0 14px 34px rgba(42,165,255,.24); }
+    .btn-primary:hover { box-shadow: 0 18px 40px rgba(42,165,255,.32); }
+    .page { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; padding: 72px 0 120px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid rgba(76,201,240,.24); background: rgba(76,201,240,.08); color: #b9ebff; border-radius: 999px; font-size: .86rem; font-weight: 600; letter-spacing: .02em; margin-bottom: 22px; }
+    .case-hero { margin-bottom: 52px; }
+    .case-hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: -.05em; margin-bottom: 20px; max-width: 780px; }
+    .case-hero h1 .gradient { background: linear-gradient(135deg, #ffffff, #89dbff 40%, #7af0a6 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 52px; }
+    .meta-item { flex: 1; min-width: 120px; padding: 18px 20px; background: rgba(255,255,255,.02); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+    .meta-item:last-child { border-right: none; }
+    .meta-item small { color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; }
+    .meta-item strong { font-size: .96rem; font-weight: 600; }
+    .cover-card { border-radius: 26px; background: linear-gradient(180deg, rgba(19,34,61,.9), rgba(10,18,33,.95)); border: 1px solid var(--line); overflow: hidden; margin-bottom: 64px; box-shadow: var(--shadow); position: relative; }
+    .cover-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(76,201,240,.12), transparent 28%), radial-gradient(circle at bottom left, rgba(34,197,94,.08), transparent 24%); }
+    .cover-inner { padding: 28px; position: relative; }
+    .cover-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .cover-dots { display: flex; gap: 6px; }
+    .cover-dots span { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.2); }
+    .cover-title { color: var(--muted); font-size: .85rem; }
+    .cover-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+    .kpi { padding: 16px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+    .kpi small { display: block; color: var(--muted); font-size: .8rem; margin-bottom: 8px; }
+    .kpi strong { font-size: 1.5rem; letter-spacing: -.04em; }
+    .kpi strong.cyan { color: var(--primary); }
+    .kpi strong.green { color: var(--accent); }
+    /* Rack grid */
+    .rack-label { color: var(--muted); font-size: .78rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    .rack-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-bottom: 14px; }
+    .rack-cell { aspect-ratio: 1; border-radius: 8px; border: 1px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+    .rack-cell.occ { background: rgba(76,201,240,.1); border-color: rgba(76,201,240,.22); }
+    .rack-cell.fefo { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.22); }
+    .rack-cell.empty { background: rgba(255,255,255,.02); border-color: var(--line); }
+    .rack-cell.sel { background: rgba(76,201,240,.18); border-color: var(--primary); box-shadow: 0 0 10px rgba(76,201,240,.2); }
+    .rack-id { font-size: .58rem; font-weight: 700; color: var(--muted); }
+    .rack-cell.occ .rack-id, .rack-cell.sel .rack-id { color: var(--primary); }
+    .rack-cell.fefo .rack-id { color: var(--accent); }
+    .rack-dot { width: 6px; height: 6px; border-radius: 999px; }
+    .rack-cell.occ .rack-dot { background: var(--primary); }
+    .rack-cell.fefo .rack-dot { background: var(--accent); }
+    .rack-cell.sel .rack-dot { background: var(--primary); box-shadow: 0 0 4px var(--primary); }
+    .rack-legend { display: flex; flex-wrap: wrap; gap: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: .78rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+    .section { margin-bottom: 60px; }
+    .section-label { font-size: .8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.12; letter-spacing: -.035em; margin-bottom: 18px; font-weight: 700; }
+    p { color: var(--muted); font-size: 1rem; margin-bottom: 16px; line-height: 1.8; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--text); font-weight: 600; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
+    .stat { padding: 24px 20px; border-radius: 18px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--line); text-align: center; }
+    .stat-num { font-size: 2.4rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: var(--primary); margin-bottom: 8px; }
+    .stat-desc { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 24px 0; }
+    .card { padding: 24px; border-radius: 20px; background: linear-gradient(180deg, rgba(18,31,53,.85), rgba(10,18,33,.95)); border: 1px solid var(--line); }
+    .card h3 { font-size: .98rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .card-icon { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: .9rem; background: rgba(76,201,240,.1); border: 1px solid rgba(76,201,240,.2); flex-shrink: 0; }
+    .card ul { list-style: none; display: grid; gap: 10px; }
+    .card ul li { display: flex; gap: 10px; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+    .card ul li::before { content: ""; width: 7px; height: 7px; margin-top: 8px; border-radius: 999px; flex-shrink: 0; background: linear-gradient(135deg, var(--primary), var(--accent)); }
+    /* Flow */
+    .flow { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0; }
+    .flow-step { flex: 1; min-width: 90px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+    .flow-step::after { content: "→"; position: absolute; right: -8px; top: 16px; color: var(--primary); font-size: .85rem; }
+    .flow-step:last-child::after { display: none; }
+    .flow-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 1.1rem; background: rgba(76,201,240,.1); border: 1px solid rgba(76,201,240,.2); margin-bottom: 8px; }
+    .flow-label { font-size: .74rem; font-weight: 600; color: var(--muted); line-height: 1.3; }
+    .timeline { display: grid; margin: 24px 0; }
+    .tl-item { display: grid; grid-template-columns: 44px 1fr; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; }
+    .tl-dot { width: 16px; height: 16px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), var(--accent)); border: 3px solid var(--bg); box-shadow: 0 0 0 3px rgba(76,201,240,.2); flex-shrink: 0; margin-top: 4px; }
+    .tl-line { flex: 1; width: 2px; background: var(--line); margin: 6px 0; }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-content { padding-bottom: 30px; padding-left: 4px; }
+    .tl-content h4 { font-size: .98rem; font-weight: 700; margin-bottom: 5px; }
+    .tl-content p { font-size: .91rem; margin: 0; }
+    .quote-box { padding: 28px; border-radius: 18px; margin: 28px 0; background: rgba(76,201,240,.06); border: 1px solid rgba(76,201,240,.18); border-left: 3px solid var(--primary); }
+    .quote-box p { color: var(--text); font-style: italic; margin: 0; font-size: 1.04rem; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .tech-pill { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03); color: #d6e1f3; font-size: .83rem; font-weight: 600; }
+    .footer-cta { margin-top: 72px; padding: 36px; border-radius: 26px; background: linear-gradient(180deg, rgba(18,31,53,.88), rgba(10,18,33,.98)); border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .footer-cta h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.03em; margin-bottom: 5px; }
+    .footer-cta p { color: var(--muted); font-size: .95rem; margin: 0; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 680px) {
+      .two-col, .stats { grid-template-columns: 1fr; }
+      .meta-strip { flex-direction: column; }
+      .meta-item { border-right: none; border-bottom: 1px solid var(--line); }
+      .meta-item:last-child { border-bottom: none; }
+      .cover-kpis { grid-template-columns: 1fr 1fr; }
+      .rack-grid { grid-template-columns: repeat(5, 1fr); }
+      .flow-step::after { display: none; }
+      .footer-cta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="site-header">
+    <div class="nav">
+      <a href="portfolio.html" class="brand">
+<div class="brand-mark" style="padding:0;overflow:hidden;"><img src="foto.webp" alt="José Miguel Castrillo" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" /></div>        <div class="brand-text"><strong>José Miguel Castrillo</strong><span>Volver al portafolio</span></div>
+      </a>
+      <a class="btn btn-secondary" href="portfolio.html#proyectos">← Proyectos</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="case-hero reveal">
+      <div class="eyebrow">Caso de estudio 04 · Logística</div>
+      <h1>WMS con <span class="gradient">FEFO/FIFO y escaneo QR</span> para almacén de alimentos</h1>
+    </div>
+    <div class="meta-strip reveal">
+      <div class="meta-item"><small>Empresa</small><strong>Confidencial</strong></div>
+      <div class="meta-item"><small>Sector</small><strong>Distribución / Alimentos</strong></div>
+      <div class="meta-item"><small>Duración</small><strong>11 semanas</strong></div>
+      <div class="meta-item"><small>Stack</small><strong>Apps Script · QR · FEFO</strong></div>
+      <div class="meta-item"><small>Año</small><strong>2024</strong></div>
+    </div>
+    <div class="cover-card reveal">
+      <div class="cover-inner">
+        <div class="cover-topbar">
+          <div class="cover-dots"><span></span><span></span><span></span></div>
+          <span class="cover-title">WMS · Vista de ubicaciones — Almacén zona refrigerada</span>
+        </div>
+        <div class="cover-kpis">
+          <div class="kpi"><small>Ubicaciones controladas</small><strong class="cyan">128</strong></div>
+          <div class="kpi"><small>Criterio de picking</small><strong>FEFO</strong></div>
+          <div class="kpi"><small>Mermas por vencimiento</small><strong class="green">0</strong></div>
+        </div>
+        <div class="rack-label">Mapa de rack — Zona A</div>
+        <div class="rack-grid">
+          <div class="rack-cell occ"><div class="rack-id">A-01</div><div class="rack-dot"></div></div>
+          <div class="rack-cell occ"><div class="rack-id">A-02</div><div class="rack-dot"></div></div>
+          <div class="rack-cell fefo"><div class="rack-id">A-03</div><div class="rack-dot"></div></div>
+          <div class="rack-cell empty"><div class="rack-id">A-04</div></div>
+          <div class="rack-cell sel"><div class="rack-id">A-05</div><div class="rack-dot"></div></div>
+          <div class="rack-cell occ"><div class="rack-id">A-06</div><div class="rack-dot"></div></div>
+          <div class="rack-cell empty"><div class="rack-id">A-07</div></div>
+          <div class="rack-cell empty"><div class="rack-id">A-08</div></div>
+          <div class="rack-cell fefo"><div class="rack-id">B-01</div><div class="rack-dot"></div></div>
+          <div class="rack-cell occ"><div class="rack-id">B-02</div><div class="rack-dot"></div></div>
+          <div class="rack-cell empty"><div class="rack-id">B-03</div></div>
+          <div class="rack-cell occ"><div class="rack-id">B-04</div><div class="rack-dot"></div></div>
+          <div class="rack-cell empty"><div class="rack-id">B-05</div></div>
+          <div class="rack-cell fefo"><div class="rack-id">B-06</div><div class="rack-dot"></div></div>
+          <div class="rack-cell occ"><div class="rack-id">B-07</div><div class="rack-dot"></div></div>
+          <div class="rack-cell empty"><div class="rack-id">B-08</div></div>
+        </div>
+        <div class="rack-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--primary)"></div>Ocupado</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>FEFO — próximo a vencer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,.12);border:1px solid var(--line)"></div>Disponible</div>
+          <div class="legend-item" style="color:var(--primary)">◈ Seleccionado para surtimiento</div>
+        </div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Contexto del proyecto</div>
+      <h2>Almacén sin ubicaciones definidas y surtimiento por memoria</h2>
+      <p>El almacén operaba sin un sistema de ubicaciones. El personal conocía "de memoria" dónde estaba cada producto, generando dependencia de personas clave y errores frecuentes en el surtimiento. El picking no seguía ningún criterio de FEFO ni FIFO, aumentando el riesgo de vencimientos y mermas no registradas.</p>
+      <p>La empresa manejaba productos perecederos con fechas de caducidad críticas. La falta de trazabilidad implicaba que los productos más antiguos no necesariamente se surtían primero, generando <strong>pérdidas económicas y riesgo de inocuidad</strong>.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">0</div><div class="stat-desc">Ubicaciones de almacén definidas al inicio del proyecto</div></div>
+        <div class="stat"><div class="stat-num">FEFO</div><div class="stat-desc">Criterio de picking sin implementar en el proceso manual</div></div>
+        <div class="stat"><div class="stat-num">QR</div><div class="stat-desc">Tecnología implementada para identificación de lotes</div></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Reto y solución</div>
+      <h2>De la memoria humana al control digital de ubicaciones</h2>
+      <div class="two-col">
+        <div class="card">
+          <h3><div class="card-icon">⚠</div>Problemas identificados</h3>
+          <ul>
+            <li>Sin ubicaciones definidas: el almacén dependía del conocimiento tácito del personal.</li>
+            <li>Picking sin criterio FEFO, generando vencimientos no detectados.</li>
+            <li>Sin registro de entradas y salidas por lote con trazabilidad.</li>
+            <li>Restricciones técnicas de GAS que impedían acceso a cámara en iframe.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><div class="card-icon">✦</div>Solución implementada</h3>
+          <ul>
+            <li>Mapa digital de ubicaciones con asignación obligatoria en cada movimiento.</li>
+            <li>Lógica FEFO/FIFO automática que propone la ubicación de surtimiento óptima.</li>
+            <li>Escaneo QR vía html5-qrcode, resolviendo restricciones de cámara en GAS.</li>
+            <li>UI mobile-first diseñada para operadores de almacén desde celular en planta.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Flujo operativo</div>
+      <h2>Recepción, almacenamiento y surtimiento integrados</h2>
+      <p>El WMS cubre el ciclo completo de movimiento de mercancía, desde la recepción hasta el despacho, con trazabilidad por lote en cada paso:</p>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-icon">📦</div><div class="flow-label">Recepción con QR</div></div>
+        <div class="flow-step"><div class="flow-icon">📍</div><div class="flow-label">Asignación de ubicación</div></div>
+        <div class="flow-step"><div class="flow-icon">🔍</div><div class="flow-label">Lógica FEFO</div></div>
+        <div class="flow-step"><div class="flow-icon">🚚</div><div class="flow-label">Surtimiento guiado</div></div>
+        <div class="flow-step"><div class="flow-icon">📊</div><div class="flow-label">Registro y reporte</div></div>
+      </div>
+      <p>Un reto técnico relevante fue el escaneo QR: las web apps de GAS se ejecutan en un iframe que bloquea el acceso directo a la cámara. La solución fue implementar <strong>html5-qrcode</strong> con una estrategia de apertura en ventana separada, pasando el resultado de vuelta al flujo principal.</p>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Resultados</div>
+      <h2>Cero mermas por vencimiento en el primer trimestre</h2>
+      <div class="quote-box"><p>"Antes teníamos que hacer inventario físico completo para saber qué estaba a punto de vencer. Ahora el sistema nos avisa con anticipación y el picker sabe exactamente a qué ubicación ir."</p></div>
+      <p>En el primer trimestre de operación, la empresa no registró ninguna merma por vencimiento, en contraste con los 3 a 5 incidentes mensuales previos. La adopción por parte del equipo fue rápida gracias al diseño mobile-first y al flujo guiado.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">0</div><div class="stat-desc">Mermas por vencimiento en primer trimestre operativo</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-desc">Movimientos con ubicación asignada y trazabilidad</div></div>
+        <div class="stat"><div class="stat-num">−60%</div><div class="stat-desc">Reducción en tiempo de surtimiento por orden</div></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Stack técnico</div>
+      <h2>Tecnología utilizada</h2>
+      <p>WMS construido sobre Google Apps Script con Sheets como base de datos de ubicaciones, lotes y movimientos. Interfaz SPA responsive diseñada específicamente para uso en celular dentro de almacén.</p>
+      <div class="tech-list">
+        <span class="tech-pill">Google Apps Script</span><span class="tech-pill">Google Sheets</span>
+        <span class="tech-pill">html5-qrcode</span><span class="tech-pill">HTML5 / CSS3</span>
+        <span class="tech-pill">JavaScript ES6</span><span class="tech-pill">FEFO / FIFO</span>
+        <span class="tech-pill">Mobile-first UI</span><span class="tech-pill">Trazabilidad por lote</span>
+      </div>
+    </div>
+    <div class="footer-cta reveal">
+      <div><h3>¿Tu almacén opera sin ubicaciones?</h3><p>Puedo ayudarte a implementar control de inventario sin WMS empresarial costoso.</p></div>
+      <a class="btn btn-primary" href="portfolio.html#contacto">Hablemos del proyecto</a>
+    </div>
+  </main>
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caso de Estudio · MES de Producción | José Miguel Castrillo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #08111f; --panel: #101c31; --panel-2: #13223d;
+      --line: rgba(255,255,255,.08); --text: #e8eef8; --muted: #9fb0c9;
+      --primary: #4cc9f0; --primary-2: #2aa5ff; --accent: #22c55e;
+      --shadow: 0 20px 60px rgba(0,0,0,.35); --max: 900px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(76,201,240,.14), transparent 22%),
+        radial-gradient(circle at 85% 10%, rgba(34,197,94,.12), transparent 18%),
+        linear-gradient(180deg, #07101d 0%, #0b1320 100%);
+      color: var(--text); overflow-x: hidden; line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+    .noise {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .045;
+      background-image: radial-gradient(circle at 20% 20%, #fff 1px, transparent 1px), radial-gradient(circle at 80% 80%, #fff 1px, transparent 1px);
+      background-size: 120px 120px, 180px 180px;
+    }
+    .site-header {
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(14px); background: rgba(8,17,31,.55);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      width: min(calc(100% - 40px), 1200px); margin-inline: auto;
+      min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center;
+      font-weight: 800; letter-spacing: -.04em;
+      background: linear-gradient(135deg, rgba(76,201,240,.22), rgba(34,197,94,.18));
+      border: 1px solid var(--line); color: #fff; flex-shrink: 0;
+    }
+    .brand-text strong { display: block; font-size: .98rem; letter-spacing: -.02em; }
+    .brand-text span { display: block; color: var(--muted); font-size: .82rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent;
+      font-weight: 700; font-size: .92rem; cursor: pointer; white-space: nowrap;
+      transition: transform .25s, box-shadow .25s, background .25s, border-color .25s;
+    }
+    @media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
+    .btn-secondary { background: rgba(255,255,255,.03); color: var(--text); border-color: var(--line); }
+    .btn-secondary:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary-2), var(--primary)); color: #06111c; box-shadow: 0 14px 34px rgba(42,165,255,.24); }
+    .btn-primary:hover { box-shadow: 0 18px 40px rgba(42,165,255,.32); }
+    .page { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; padding: 72px 0 120px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px;
+      border: 1px solid rgba(76,201,240,.24); background: rgba(76,201,240,.08);
+      color: #b9ebff; border-radius: 999px; font-size: .86rem; font-weight: 600; letter-spacing: .02em; margin-bottom: 22px;
+    }
+    .case-hero { margin-bottom: 52px; }
+    .case-hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: -.05em; margin-bottom: 20px; max-width: 780px; }
+    .case-hero h1 .gradient { background: linear-gradient(135deg, #ffffff, #89dbff 40%, #7af0a6 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .meta-strip { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 52px; }
+    .meta-item { flex: 1; min-width: 120px; padding: 18px 20px; background: rgba(255,255,255,.02); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+    .meta-item:last-child { border-right: none; }
+    .meta-item small { color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; }
+    .meta-item strong { font-size: .96rem; font-weight: 600; }
+    .cover-card { border-radius: 26px; background: linear-gradient(180deg, rgba(19,34,61,.9), rgba(10,18,33,.95)); border: 1px solid var(--line); overflow: hidden; margin-bottom: 64px; box-shadow: var(--shadow); position: relative; }
+    .cover-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(76,201,240,.12), transparent 28%), radial-gradient(circle at bottom left, rgba(34,197,94,.08), transparent 24%); }
+    .cover-inner { padding: 28px; position: relative; }
+    .cover-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .cover-dots { display: flex; gap: 6px; }
+    .cover-dots span { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.2); }
+    .cover-title { color: var(--muted); font-size: .85rem; }
+    .cover-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+    .kpi { padding: 16px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+    .kpi small { display: block; color: var(--muted); font-size: .8rem; margin-bottom: 8px; }
+    .kpi strong { font-size: 1.5rem; letter-spacing: -.04em; }
+    .kpi strong.cyan { color: var(--primary); }
+    .kpi strong.green { color: var(--accent); }
+    .cover-chart { height: 120px; border-radius: 16px; padding: 16px; background: rgba(255,255,255,.03); border: 1px solid var(--line); display: flex; align-items: flex-end; gap: 10px; }
+    .bar { flex: 1; border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, rgba(76,201,240,.9), rgba(42,165,255,.2)); }
+    .section { margin-bottom: 60px; }
+    .section-label { font-size: .8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.12; letter-spacing: -.035em; margin-bottom: 18px; font-weight: 700; }
+    p { color: var(--muted); font-size: 1rem; margin-bottom: 16px; line-height: 1.8; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--text); font-weight: 600; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
+    .stat { padding: 24px 20px; border-radius: 18px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--line); text-align: center; }
+    .stat-num { font-size: 2.4rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: var(--primary); margin-bottom: 8px; }
+    .stat-desc { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 24px 0; }
+    .card { padding: 24px; border-radius: 20px; background: linear-gradient(180deg, rgba(18,31,53,.85), rgba(10,18,33,.95)); border: 1px solid var(--line); }
+    .card h3 { font-size: .98rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .card-icon { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: .9rem; background: rgba(76,201,240,.1); border: 1px solid rgba(76,201,240,.2); flex-shrink: 0; }
+    .card ul { list-style: none; display: grid; gap: 10px; }
+    .card ul li { display: flex; gap: 10px; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+    .card ul li::before { content: ""; width: 7px; height: 7px; margin-top: 8px; border-radius: 999px; flex-shrink: 0; background: linear-gradient(135deg, var(--primary), var(--accent)); }
+    .timeline { display: grid; margin: 24px 0; }
+    .tl-item { display: grid; grid-template-columns: 44px 1fr; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; }
+    .tl-dot { width: 16px; height: 16px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), var(--accent)); border: 3px solid var(--bg); box-shadow: 0 0 0 3px rgba(76,201,240,.2); flex-shrink: 0; margin-top: 4px; }
+    .tl-line { flex: 1; width: 2px; background: var(--line); margin: 6px 0; }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-content { padding-bottom: 30px; padding-left: 4px; }
+    .tl-content h4 { font-size: .98rem; font-weight: 700; margin-bottom: 5px; }
+    .tl-content p { font-size: .91rem; margin: 0; }
+    .quote-box { padding: 28px; border-radius: 18px; margin: 28px 0; background: rgba(76,201,240,.06); border: 1px solid rgba(76,201,240,.18); border-left: 3px solid var(--primary); }
+    .quote-box p { color: var(--text); font-style: italic; margin: 0; font-size: 1.04rem; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .tech-pill { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03); color: #d6e1f3; font-size: .83rem; font-weight: 600; }
+    .footer-cta { margin-top: 72px; padding: 36px; border-radius: 26px; background: linear-gradient(180deg, rgba(18,31,53,.88), rgba(10,18,33,.98)); border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .footer-cta h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.03em; margin-bottom: 5px; }
+    .footer-cta p { color: var(--muted); font-size: .95rem; margin: 0; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 680px) {
+      .two-col, .stats { grid-template-columns: 1fr; }
+      .meta-strip { flex-direction: column; }
+      .meta-item { border-right: none; border-bottom: 1px solid var(--line); }
+      .meta-item:last-child { border-bottom: none; }
+      .cover-kpis { grid-template-columns: 1fr 1fr; }
+      .footer-cta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="site-header">
+    <div class="nav">
+      <a href="portfolio.html" class="brand">
+<div class="brand-mark" style="padding:0;overflow:hidden;"><img src="foto.webp" alt="José Miguel Castrillo" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" /></div>        <div class="brand-text"><strong>José Miguel Castrillo</strong><span>Volver al portafolio</span></div>
+      </a>
+      <a class="btn btn-secondary" href="portfolio.html#proyectos">← Proyectos</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="case-hero reveal">
+      <div class="eyebrow">Caso de estudio 01 · Manufactura</div>
+      <h1>Sistema de Ejecución de Manufactura para <span class="gradient">planta con 3 líneas de producción</span></h1>
+    </div>
+    <div class="meta-strip reveal">
+      <div class="meta-item"><small>Empresa</small><strong>Confidencial</strong></div>
+      <div class="meta-item"><small>Sector</small><strong>Manufactura de alimentos</strong></div>
+      <div class="meta-item"><small>Duración</small><strong>14 semanas</strong></div>
+      <div class="meta-item"><small>Stack</small><strong>PHP · Laravel · SQL</strong></div>
+      <div class="meta-item"><small>Año</small><strong>2024</strong></div>
+    </div>
+    <div class="cover-card reveal">
+      <div class="cover-inner">
+        <div class="cover-topbar">
+          <div class="cover-dots"><span></span><span></span><span></span></div>
+          <span class="cover-title">MES · Panel de ejecución — Planta Norte</span>
+        </div>
+        <div class="cover-kpis">
+          <div class="kpi"><small>Eficiencia global (OEE)</small><strong class="cyan">87.4%</strong></div>
+          <div class="kpi"><small>Órdenes activas</small><strong>12</strong></div>
+          <div class="kpi"><small>Cumplimiento de plan</small><strong class="green">94%</strong></div>
+        </div>
+        <div class="cover-chart">
+          <div class="bar" style="height:52%"></div><div class="bar" style="height:68%"></div>
+          <div class="bar" style="height:80%"></div><div class="bar" style="height:63%"></div>
+          <div class="bar" style="height:91%"></div><div class="bar" style="height:75%"></div>
+          <div class="bar" style="height:95%"></div><div class="bar" style="height:83%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Contexto del proyecto</div>
+      <h2>Una planta que operaba con hojas de Excel y comunicación verbal</h2>
+      <p>La empresa contaba con tres líneas de producción activas que generaban entre 40 y 60 órdenes de fabricación semanales. El seguimiento se realizaba en hojas de cálculo individuales por supervisor, sin consolidación centralizada ni visibilidad en tiempo real para la gerencia.</p>
+      <p>Los reportes de turno se generaban manualmente al final de cada jornada, lo que significaba que cualquier desviación en producción se detectaba con <strong>8 a 12 horas de retraso</strong>. Los paros de línea no tenían registro sistemático y el análisis de causas raíz era prácticamente inexistente.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">8–12h</div><div class="stat-desc">Tiempo promedio de detección de desviaciones en producción</div></div>
+        <div class="stat"><div class="stat-num">3</div><div class="stat-desc">Líneas de producción sin visibilidad unificada</div></div>
+        <div class="stat"><div class="stat-num">0</div><div class="stat-desc">Registros históricos de paros disponibles al inicio</div></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Reto y solución</div>
+      <h2>Del papel a una vista centralizada de ejecución</h2>
+      <div class="two-col">
+        <div class="card">
+          <h3><div class="card-icon">⚠</div>Problemas identificados</h3>
+          <ul>
+            <li>Sin visibilidad centralizada de avance por línea en tiempo real.</li>
+            <li>Registro de paros inexistente o inconsistente por turno.</li>
+            <li>Reportes manuales tardíos con datos no comparables entre turnos.</li>
+            <li>Imposibilidad de calcular OEE o cumplimiento de plan de forma confiable.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><div class="card-icon">✦</div>Solución implementada</h3>
+          <ul>
+            <li>MES web con panel unificado para las 3 líneas, accesible desde cualquier dispositivo.</li>
+            <li>Módulo de captura de paros con catálogo de causas estandarizado.</li>
+            <li>Cálculo automático de OEE, cumplimiento y eficiencia por turno y línea.</li>
+            <li>Reportes automáticos de cierre de turno enviados por correo a gerencia.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Implementación</div>
+      <h2>Fases del proyecto</h2>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><h4>Semanas 1–3 · Diagnóstico y levantamiento</h4><p>Mapeo de flujos actuales, entrevistas con supervisores y gerencia. Definición del catálogo de causas de paro y estructura de órdenes de fabricación.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><h4>Semanas 4–7 · Backend y modelo de datos</h4><p>Diseño de base de datos relacional (MySQL), desarrollo de API REST con Laravel. Módulos de órdenes, turnos, paros y usuarios con roles diferenciados.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><h4>Semanas 8–11 · Interfaz operativa</h4><p>Panel en tiempo real, formularios para operadores y supervisores, dashboard de KPI para gerencia. Pruebas en planta con usuarios reales.</p></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><h4>Semanas 12–14 · Piloto y ajustes</h4><p>Operación paralela sistema + Excel durante 2 semanas. Ajustes de UX en planta. Capacitación a supervisores y gerencia. Cierre de proyecto.</p></div></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Resultados</div>
+      <h2>Visibilidad inmediata, decisiones más rápidas</h2>
+      <div class="quote-box"><p>"El primer mes ya detectamos en tiempo real un paro recurrente en la línea 2 que antes se perdía entre los reportes. Eso solo justificó el proyecto."</p></div>
+      <p>Al cierre del piloto, la planta contaba con su primer histórico estructurado de paros y eficiencia productiva. La gerencia pasó de recibir datos al día siguiente a tener un panel actualizado cada 15 minutos.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">87%</div><div class="stat-desc">OEE medido al cierre del segundo mes de operación</div></div>
+        <div class="stat"><div class="stat-num">&lt;15 min</div><div class="stat-desc">Tiempo de detección de desviaciones en turno</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-desc">Adopción por supervisores al mes 2</div></div>
+      </div>
+    </div>
+    <div class="section reveal">
+      <div class="section-label">Stack técnico</div>
+      <h2>Tecnología utilizada</h2>
+      <p>Backend PHP/Laravel sobre MySQL, desplegado en servidor interno. Interfaz SPA que funciona en tablets y teléfonos desde planta sin instalación adicional.</p>
+      <div class="tech-list">
+        <span class="tech-pill">PHP 8.1</span><span class="tech-pill">Laravel 10</span><span class="tech-pill">MySQL</span>
+        <span class="tech-pill">HTML / CSS / JS</span><span class="tech-pill">Chart.js</span>
+        <span class="tech-pill">REST API</span><span class="tech-pill">SMTP · Reportes automáticos</span><span class="tech-pill">Roles y permisos</span>
+      </div>
+    </div>
+    <div class="footer-cta reveal">
+      <div><h3>¿Tienes un reto similar?</h3><p>Puedo ayudarte a diseñar e implementar un sistema MES adaptado a tu operación.</p></div>
+      <a class="btn btn-primary" href="portfolio.html#contacto">Hablemos del proyecto</a>
+    </div>
+  </main>
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

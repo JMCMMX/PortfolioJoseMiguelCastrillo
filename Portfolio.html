@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>José Miguel Castrillo | Portafolio</title>
+  <meta name="description" content="Portafolio de José Miguel Castrillo. Desarrollo de soluciones MES, automatización, Apps Script, AppSheet, dashboards e integración de procesos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0d1728;
+      --panel: #101c31;
+      --panel-2: #13223d;
+      --line: rgba(255,255,255,.08);
+      --text: #e8eef8;
+      --muted: #9fb0c9;
+      --primary: #4cc9f0;
+      --primary-2: #2aa5ff;
+      --accent: #22c55e;
+      --accent-2: #16a34a;
+      --warning: #f59e0b;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --max: 1200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(76,201,240,.14), transparent 22%),
+        radial-gradient(circle at 85% 10%, rgba(34,197,94,.12), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(42,165,255,.08), transparent 25%),
+        linear-gradient(180deg, #07101d 0%, #0b1320 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .section {
+      position: relative;
+      padding: 96px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 1px solid rgba(76,201,240,.24);
+      background: rgba(76,201,240,.08);
+      color: #b9ebff;
+      border-radius: 999px;
+      font-size: .86rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      margin: 18px 0 14px;
+      max-width: 800px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.75;
+      max-width: 760px;
+    }
+
+    .grid { display: grid; gap: 24px; }
+
+    /* ── Canvas background ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: .75;
+      pointer-events: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .045;
+      background-image:
+        radial-gradient(circle at 20% 20%, #fff 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, #fff 1px, transparent 1px),
+        radial-gradient(circle at 40% 70%, #fff 1px, transparent 1px);
+      background-size: 120px 120px, 180px 180px, 140px 140px;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(8,17,31,.55);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      transition: box-shadow .3s ease;
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, rgba(76,201,240,.22), rgba(34,197,94,.18));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), var(--shadow);
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .brand-text { min-width: 0; }
+    .brand-text strong { display: block; font-size: .98rem; letter-spacing: -.02em; }
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .96rem;
+      position: relative;
+      transition: .25s ease;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: .25s ease;
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      font-size: .96rem;
+      cursor: pointer;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+      white-space: nowrap;
+    }
+
+    @media (hover: hover) {
+      .btn:hover { transform: translateY(-2px); }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-2), var(--primary));
+      color: #06111c;
+      box-shadow: 0 14px 34px rgba(42,165,255,.24);
+    }
+
+    .btn-primary:hover { box-shadow: 0 18px 40px rgba(42,165,255,.32); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-color: rgba(255,255,255,.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.16);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .menu-toggle span {
+      position: absolute;
+      left: 50%;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      transition: .25s ease;
+    }
+
+    .menu-toggle span:nth-child(1) { top: 15px; }
+    .menu-toggle span:nth-child(2) { top: 22px; }
+    .menu-toggle span:nth-child(3) { top: 29px; }
+
+    .menu-toggle.active span:nth-child(1) { top: 22px; transform: translateX(-50%) rotate(45deg); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { top: 22px; transform: translateX(-50%) rotate(-45deg); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 64px 0 42px;
+      min-height: calc(100vh - 78px);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.4rem, 5.5vw, 5.4rem);
+      line-height: .95;
+      letter-spacing: -.06em;
+      margin: 18px 0 18px;
+      max-width: 760px;
+    }
+
+    .hero-copy h1 .gradient {
+      background: linear-gradient(135deg, #ffffff, #89dbff 40%, #7af0a6 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy p {
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-stats {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 760px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card strong { display: block; font-size: 1.2rem; margin-bottom: 8px; letter-spacing: -.04em; }
+    .stat-card span { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+
+    /* ── Hero visual / dashboard ── */
+    .hero-visual { position: relative; }
+
+    .dashboard-card {
+      position: relative;
+      padding: 22px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(19,34,61,.88), rgba(10,18,33,.92));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 28px 70px rgba(0,0,0,.45);
+      overflow: hidden;
+    }
+
+    .dashboard-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(76,201,240,.12), transparent 24%),
+        radial-gradient(circle at left center, rgba(34,197,94,.09), transparent 22%);
+      pointer-events: none;
+    }
+
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .dash-title strong { display: block; font-size: 1rem; }
+    .dash-title span { color: var(--muted); font-size: .88rem; }
+
+    .dash-badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.22);
+      color: #99f6b6;
+      font-size: .8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .kpi small { display: block; color: var(--muted); margin-bottom: 10px; font-size: .82rem; }
+    .kpi strong { font-size: 1.45rem; letter-spacing: -.04em; }
+
+    .dash-chart {
+      height: 160px;
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-grid {
+      position: absolute;
+      inset: 18px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 10px;
+    }
+
+    .bar {
+      border-radius: 12px 12px 4px 4px;
+      background: linear-gradient(180deg, rgba(76,201,240,.95), rgba(42,165,255,.25));
+      box-shadow: 0 14px 26px rgba(42,165,255,.2);
+      transform-origin: bottom;
+    }
+
+    .dash-footer {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+
+    .mini-panel {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .mini-panel strong { display: block; margin-bottom: 12px; font-size: .92rem; }
+
+    .activity-list { display: grid; gap: 10px; list-style: none; }
+
+    .activity-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 0 0 4px rgba(76,201,240,.12);
+    }
+
+    .ring {
+      width: 100px;
+      aspect-ratio: 1;
+      margin: 8px auto 0;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0 72%, rgba(255,255,255,.08) 72% 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .ring::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      background: #101c31;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .ring span { position: relative; z-index: 1; font-weight: 800; font-size: 1.1rem; }
+
+    /* Floating chips — hidden on touch devices */
+    .floating-chip {
+      position: absolute;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(16,28,49,.95);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      font-size: .9rem;
+      color: var(--text);
+      backdrop-filter: blur(12px);
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .chip-a { top: 8%; right: -5%; }
+    .chip-b { left: -6%; bottom: 18%; }
+    .chip-c { right: 12%; bottom: -5%; }
+
+    /* ── Projects ── */
+    .projects-grid {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(18,31,53,.88), rgba(10,18,33,.98));
+      border: 1px solid rgba(255,255,255,.08);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    @media (hover: hover) {
+      .project-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(76,201,240,.25);
+        box-shadow: 0 28px 70px rgba(0,0,0,.45);
+      }
+    }
+
+    .project-cover {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(76,201,240,.2), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(34,197,94,.16), transparent 24%),
+        linear-gradient(135deg, #0f1d34, #0a1526);
+    }
+
+    .project-wireframe {
+      position: absolute;
+      inset: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+    }
+
+    .wire-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .wire-dots { display: flex; gap: 8px; }
+    .wire-dots span { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.28); }
+    .wire-pill { min-width: 84px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.12); }
+    .wire-body { display: grid; grid-template-columns: 1.1fr .9fr; gap: 12px; }
+    .wire-col { display: grid; gap: 10px; }
+    .wire-box, .wire-line { border-radius: 14px; background: rgba(255,255,255,.06); }
+    .wire-box { min-height: 74px; }
+    .wire-line { height: 12px; }
+    .wire-box.highlight {
+      background: linear-gradient(135deg, rgba(76,201,240,.26), rgba(42,165,255,.08));
+      border: 1px solid rgba(76,201,240,.18);
+    }
+
+    .project-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .project-header h3 { font-size: 1.25rem; letter-spacing: -.03em; }
+
+    .project-tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(76,201,240,.08);
+      border: 1px solid rgba(76,201,240,.18);
+      color: #b9ebff;
+      font-size: .8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .project-content p { color: var(--muted); line-height: 1.8; font-size: .95rem; }
+
+    .project-list {
+      margin: 18px 0 20px;
+      display: grid;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .project-list li {
+      display: flex;
+      gap: 10px;
+      color: #dbe5f5;
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+
+    .project-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+
+    .tech-tags span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color: #d6e1f3;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    .project-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .project-actions .btn { flex: 1 1 auto; min-width: 120px; }
+
+    /* ── Process ── */
+    .process-grid {
+      margin-top: 38px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .process-card {
+      position: relative;
+      padding: 26px 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(18,31,53,.85), rgba(10,18,33,.95));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+    }
+
+    .process-number {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(76,201,240,.18), rgba(34,197,94,.14));
+      border: 1px solid rgba(255,255,255,.08);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .process-card h3 { margin-bottom: 12px; font-size: 1.08rem; letter-spacing: -.02em; }
+    .process-card p { color: var(--muted); line-height: 1.8; font-size: .93rem; }
+
+    /* ── Tech stack ── */
+    .tech-grid {
+      margin-top: 34px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .tech-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(18,31,53,.85), rgba(10,18,33,.95));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      transition: transform .3s ease, border-color .3s ease;
+    }
+
+    @media (hover: hover) {
+      .tech-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(76,201,240,.22);
+      }
+    }
+
+    .tech-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(76,201,240,.18), rgba(34,197,94,.14));
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .tech-card h3 { font-size: 1.02rem; margin-bottom: 10px; }
+    .tech-card p { color: var(--muted); line-height: 1.75; font-size: .92rem; }
+
+    /* ── CTA / Contact ── */
+    .cta-card {
+      position: relative;
+      margin-top: 34px;
+      padding: 34px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(76,201,240,.16), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(34,197,94,.12), transparent 24%),
+        linear-gradient(135deg, rgba(17,31,52,.95), rgba(10,18,33,.98));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .cta-card h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -.04em;
+      margin-bottom: 14px;
+    }
+
+    .cta-card p { color: var(--muted); line-height: 1.9; max-width: 620px; }
+
+    .contact-list { display: grid; gap: 14px; list-style: none; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      flex-wrap: wrap;
+    }
+
+    .contact-label { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .contact-label small { color: var(--muted); font-size: .82rem; }
+    .contact-label strong { font-size: .94rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── Footer ── */
+    .site-footer { padding: 28px 0 42px; color: var(--muted); font-size: .92rem; }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    /* ── Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Bar animation (CSS only, no GSAP dependency) ── */
+    @keyframes barPulse {
+      0%, 100% { opacity: .6; transform: scaleY(.82); }
+      50%       { opacity: 1;  transform: scaleY(1); }
+    }
+
+    .bar {
+      animation: barPulse 2.4s ease-in-out infinite;
+    }
+
+    .bar:nth-child(1) { animation-delay: 0s; }
+    .bar:nth-child(2) { animation-delay: .15s; }
+    .bar:nth-child(3) { animation-delay: .3s; }
+    .bar:nth-child(4) { animation-delay: .45s; }
+    .bar:nth-child(5) { animation-delay: .6s; }
+    .bar:nth-child(6) { animation-delay: .75s; }
+
+    /* ── Card float (CSS, respects prefers-reduced-motion) ── */
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    @keyframes floatChip {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .dashboard-card { animation: floatCard 3s ease-in-out infinite; }
+      .chip-a { animation: floatChip 2.8s ease-in-out infinite; }
+      .chip-b { animation: floatChip 3.1s ease-in-out .35s infinite; }
+      .chip-c { animation: floatChip 2.6s ease-in-out .7s infinite; }
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ══════════════════════════════════════ */
+
+    /* 1080px – tablet landscape */
+    @media (max-width: 1080px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { max-width: 600px; margin: 0 auto; }
+
+      .cta-grid { grid-template-columns: 1fr; }
+      .dash-footer { grid-template-columns: 1fr; }
+
+      .projects-grid,
+      .process-grid,
+      .tech-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .chip-a { right: 2%; top: -2%; }
+      .chip-b { left: 1%; bottom: 14%; }
+      .chip-c { right: 6%; bottom: -4%; }
+    }
+
+    /* 820px – tablet portrait */
+    @media (max-width: 820px) {
+      .nav-links,
+      .nav-actions .btn-secondary { display: none; }
+
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+
+      .mobile-menu {
+        position: fixed;
+        inset: 79px 16px auto 16px;
+        background: rgba(10,18,33,.97);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+        display: none;
+        z-index: 999;
+      }
+
+      .mobile-menu.open { display: block; }
+
+      .mobile-menu nav { display: grid; gap: 10px; }
+
+      .mobile-menu a {
+        display: block;
+        padding: 14px 16px;
+        border-radius: 14px;
+        color: var(--text);
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.06);
+        font-weight: 600;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 34px 0 48px;
+      }
+
+      /* Hero stats: 1 column en tablet */
+      .hero-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .section { padding: 72px 0; }
+
+      /* Chips fuera en tablet portrait */
+      .floating-chip { display: none; }
+
+      .footer-row { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* 640px – móvil grande */
+    @media (max-width: 640px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .nav { min-height: 68px; }
+
+      .hero-copy h1 { font-size: clamp(2.1rem, 8vw, 2.8rem); }
+
+      /* Stats a 1 columna en móvil */
+      .hero-stats { grid-template-columns: 1fr; }
+
+      .projects-grid,
+      .process-grid,
+      .tech-grid { grid-template-columns: 1fr; }
+
+      .project-cover { height: 180px; }
+
+      .cta-card { padding: 24px 20px; }
+
+      /* Acciones de proyectos apiladas */
+      .project-actions { flex-direction: column; }
+      .project-actions .btn { width: 100%; }
+
+      /* Hero actions: apiladas */
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; text-align: center; }
+
+      /* Dashboard compacto */
+      .dash-chart { height: 130px; }
+      .kpi strong { font-size: 1.2rem; }
+
+      .dashboard-card { border-radius: 22px; }
+    }
+
+    /* 400px – móvil pequeño */
+    @media (max-width: 400px) {
+      .hero-copy h1 { font-size: 1.95rem; }
+      .kpi-grid { gap: 10px; }
+      .kpi { padding: 12px; }
+    }
+
+    /* ── Project cover thumbnails ── */
+    .project-cover { font-size: 0; } /* reset inline font */
+
+    .thumb {
+      position: absolute; inset: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 14px;
+      display: flex; flex-direction: column; gap: 10px;
+      overflow: hidden;
+    }
+
+    .thumb-topbar { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .thumb-dots { display: flex; gap: 5px; }
+    .thumb-dots span { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.22); }
+    .thumb-label { color: rgba(255,255,255,.35); font-size: .72rem; font-family: "Inter", sans-serif; }
+
+    /* MES: KPI row + bars */
+    .thumb-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; flex-shrink: 0; }
+    .thumb-kpi { padding: 8px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); }
+    .thumb-kpi-lbl { font-size: .62rem; color: rgba(255,255,255,.35); font-family: "Inter",sans-serif; margin-bottom: 4px; }
+    .thumb-kpi-val { font-size: 1rem; font-weight: 800; letter-spacing: -.03em; font-family: "Inter",sans-serif; }
+    .thumb-kpi-val.cyan { color: var(--primary); }
+    .thumb-kpi-val.green { color: var(--accent); }
+    .thumb-bars { flex: 1; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); padding: 10px; display: flex; align-items: flex-end; gap: 7px; min-height: 0; }
+    .thumb-bar { flex: 1; border-radius: 5px 5px 2px 2px; background: linear-gradient(180deg, rgba(76,201,240,.85), rgba(42,165,255,.18)); }
+
+    /* Apps Script: table */
+    .thumb-table { flex: 1; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,.06); display: flex; flex-direction: column; min-height: 0; }
+    .thumb-tr { display: grid; grid-template-columns: 1fr 70px 60px; border-bottom: 1px solid rgba(255,255,255,.05); flex-shrink: 0; }
+    .thumb-tr:last-child { border-bottom: none; }
+    .thumb-tr span { padding: 6px 8px; font-size: .66rem; font-family: "Inter",sans-serif; color: rgba(255,255,255,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-right: 1px solid rgba(255,255,255,.05); }
+    .thumb-tr span:last-child { border-right: none; }
+    .thumb-tr.th { background: rgba(255,255,255,.04); }
+    .thumb-tr.th span { color: rgba(255,255,255,.28); font-weight: 700; font-size: .6rem; text-transform: uppercase; letter-spacing: .05em; }
+    .thumb-tr.hl { background: rgba(76,201,240,.06); }
+    .tpill { display: inline-block; padding: 1px 5px; border-radius: 4px; font-size: .58rem; font-weight: 700; }
+    .tpill-b { background: rgba(76,201,240,.18); color: var(--primary); }
+    .tpill-g { background: rgba(34,197,94,.18); color: var(--accent); }
+    .tpill-w { background: rgba(245,158,11,.15); color: #fbbf24; }
+
+    /* HACCP: decision tree */
+    .thumb-tree { display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; }
+    .thumb-node { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); }
+    .thumb-node-q { font-size: .64rem; color: rgba(255,255,255,.45); font-family: "Inter",sans-serif; margin-bottom: 6px; line-height: 1.35; }
+    .thumb-node-ans { display: flex; gap: 6px; }
+    .tans { padding: 3px 8px; border-radius: 999px; font-size: .6rem; font-weight: 700; font-family: "Inter",sans-serif; }
+    .tans-y { background: rgba(76,201,240,.14); border: 1px solid rgba(76,201,240,.28); color: var(--primary); }
+    .tans-n { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.22); color: #fbbf24; }
+    .tans-p { background: rgba(34,197,94,.14); border: 1px solid rgba(34,197,94,.28); color: var(--accent); }
+
+    /* WMS: rack grid */
+    .thumb-rack { display: grid; grid-template-columns: repeat(8,1fr); gap: 5px; flex: 1; align-content: start; }
+    .thumb-cell { aspect-ratio: 1; border-radius: 5px; border: 1px solid; display: grid; place-items: center; }
+    .thumb-cell.occ { background: rgba(76,201,240,.1); border-color: rgba(76,201,240,.22); }
+    .thumb-cell.fefo { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.22); }
+    .thumb-cell.empty { background: rgba(255,255,255,.02); border-color: rgba(255,255,255,.06); }
+    .thumb-cell.sel { background: rgba(76,201,240,.22); border-color: var(--primary); box-shadow: 0 0 6px rgba(76,201,240,.3); }
+    .thumb-cell-dot { width: 5px; height: 5px; border-radius: 999px; }
+    .thumb-cell.occ .thumb-cell-dot { background: var(--primary); }
+    .thumb-cell.fefo .thumb-cell-dot { background: var(--accent); }
+    .thumb-cell.sel .thumb-cell-dot { background: var(--primary); }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="noise"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#inicio" class="brand">
+<div class="brand-mark" style="padding:0;overflow:hidden;"><img src="foto.webp" alt="José Miguel Castrillo" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" /></div>        <div class="brand-text">
+          <strong>José Miguel Castrillo</strong>
+          <span>Automatización · MES · Apps Script · Soluciones Web</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#stack">Tecnologías</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="#stack">Ver stack</a>
+        <a class="btn btn-primary" href="#proyectos">Ver proyectos</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <nav>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#stack">Tecnologías</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Hero ── -->
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow reveal">Ingeniero en Alimentos · Lean Six Sigma Black Belt · Desarrollo de software</div>
+
+          <h1 class="reveal">
+            Desarrollo soluciones digitales con
+            <span class="gradient">impacto real en operación</span>
+          </h1>
+
+          <p class="reveal">
+            Soy Ingeniero en Alimentos con certificación Lean Six Sigma Black Belt y experto en
+            implementación de sistemas de gestión: FSSC 22000, ISO 22000, ISO 9001, ISO 14001 e
+            ISO 45001. Combino mi formación técnica en procesos, inocuidad y mejora continua con el
+            desarrollo de sistemas digitales — MES, WMS, HACCP, automatización y dashboards — para
+            transformar operaciones en soluciones que generan visibilidad, control y eficiencia medible.
+          </p>
+
+          <div class="hero-actions reveal">
+            <a class="btn btn-primary" href="#proyectos">Explorar proyectos</a>
+            <a class="btn btn-secondary" href="#contacto">Contactar</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-card reveal">
+              <strong>Ing. en Alimentos</strong>
+              <span>Experto en FSSC 22000, ISO 22000, ISO 9001, ISO 14001 e ISO 45001. Inocuidad, normativa MX y Codex.</span>
+            </div>
+            <div class="stat-card reveal">
+              <strong>Lean Six Sigma BB</strong>
+              <span>Certificación Black Belt aplicada a reducción de desperdicios, mejora de procesos y análisis de datos.</span>
+            </div>
+            <div class="stat-card reveal">
+              <strong>MES / WMS / Apps Script</strong>
+              <span>Sistemas conectados al negocio para trazabilidad, automatización y ejecución operativa.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="dashboard-card">
+            <div class="dash-top">
+              <div class="dash-title">
+                <strong>Centro de Control Operativo</strong>
+                <span>Monitoreo, automatización y visibilidad</span>
+              </div>
+              <div class="dash-badge">Demo segura</div>
+            </div>
+
+            <div class="kpi-grid">
+              <div class="kpi">
+                <small>Órdenes monitoreadas</small>
+                <strong>128</strong>
+              </div>
+              <div class="kpi">
+                <small>Avance productivo</small>
+                <strong>87%</strong>
+              </div>
+              <div class="kpi">
+                <small>Automatizaciones</small>
+                <strong>24</strong>
+              </div>
+              <div class="kpi">
+                <small>Incidencias activas</small>
+                <strong>06</strong>
+              </div>
+            </div>
+
+            <div class="dash-chart">
+              <div class="chart-grid">
+                <div class="bar" style="height:42%"></div>
+                <div class="bar" style="height:58%"></div>
+                <div class="bar" style="height:74%"></div>
+                <div class="bar" style="height:66%"></div>
+                <div class="bar" style="height:88%"></div>
+                <div class="bar" style="height:96%"></div>
+              </div>
+            </div>
+
+            <div class="dash-footer">
+              <div class="mini-panel">
+                <strong>Procesos principales</strong>
+                <ul class="activity-list">
+                  <li><span class="dot"></span>Planeación de producción y seguimiento visual</li>
+                  <li><span class="dot"></span>Captura y consulta operativa en tiempo real</li>
+                  <li><span class="dot"></span>Automatización de reportes y alertas</li>
+                </ul>
+              </div>
+              <div class="mini-panel">
+                <strong>Eficiencia operativa</strong>
+                <div class="ring"><span>72%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-chip chip-a">Apps Script · Dashboards</div>
+          <div class="floating-chip chip-b">MES · Logística · Automatización</div>
+          <div class="floating-chip chip-c">GitHub Pages · Demos controladas</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Proyectos ── -->
+    <section class="section" id="proyectos">
+      <div class="container">
+        <div class="eyebrow reveal">Proyectos destacados</div>
+        <h2 class="section-title reveal">Soluciones diseñadas para operación, control y automatización</h2>
+        <p class="section-subtitle reveal">
+          Cada proyecto está presentado como una combinación de caso de negocio, enfoque técnico y demo visual.
+          Puedes explorar los sistemas funcionales directamente desde los botones de cada tarjeta.
+        </p>
+
+        <div class="projects-grid">
+
+          <!-- Proyecto 1: MES de Producción -->
+          <article class="project-card reveal">
+            <div class="project-cover">
+              <div class="thumb">
+                <div class="thumb-topbar">
+                  <div class="thumb-dots"><span></span><span></span><span></span></div>
+                  <span class="thumb-label">MES · Panel de ejecución</span>
+                </div>
+                <div class="thumb-kpis">
+                  <div class="thumb-kpi"><div class="thumb-kpi-lbl">OEE</div><div class="thumb-kpi-val cyan">87%</div></div>
+                  <div class="thumb-kpi"><div class="thumb-kpi-lbl">Órdenes</div><div class="thumb-kpi-val">12</div></div>
+                  <div class="thumb-kpi"><div class="thumb-kpi-lbl">Cumplim.</div><div class="thumb-kpi-val green">94%</div></div>
+                </div>
+                <div class="thumb-bars">
+                  <div class="thumb-bar" style="height:52%"></div>
+                  <div class="thumb-bar" style="height:68%"></div>
+                  <div class="thumb-bar" style="height:82%"></div>
+                  <div class="thumb-bar" style="height:63%"></div>
+                  <div class="thumb-bar" style="height:91%"></div>
+                  <div class="thumb-bar" style="height:75%"></div>
+                  <div class="thumb-bar" style="height:95%"></div>
+                  <div class="thumb-bar" style="height:83%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-header">
+                <h3>MES de Producción</h3>
+                <span class="project-tag">Manufactura</span>
+              </div>
+
+              <p>
+                Sistema de ejecución de manufactura (MES) para registrar, visualizar y dar seguimiento
+                a la ejecución operativa en planta, sustituyendo hojas manuales por una vista centralizada
+                en tiempo real.
+              </p>
+
+              <ul class="project-list">
+                <li>Registro y consulta de órdenes de producción con trazabilidad por lote.</li>
+                <li>Visualización de avance por línea para supervisión y toma de decisiones.</li>
+                <li>Arquitectura escalable hacia módulos de planeación avanzada (APS/MRP).</li>
+              </ul>
+
+              <div class="tech-tags">
+                <span>PHP</span>
+                <span>Laravel</span>
+                <span>SQL</span>
+                <span>MES</span>
+              </div>
+
+              <div class="project-actions">
+                <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbx8VKliRSM501tTJIp0SJsg37H-VYrAMxwvF5_XfzHjvwrBQCAR5QewapffEvKpn3MqJA/exec" target="_blank" rel="noopener noreferrer">Ver demo</a>
+                <a class="btn btn-secondary" href="caso-mes.html" target="_blank" rel="noopener noreferrer">Caso de estudio</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Proyecto 2: Automatización Apps Script -->
+          <article class="project-card reveal">
+            <div class="project-cover">
+              <div class="thumb">
+                <div class="thumb-topbar">
+                  <div class="thumb-dots"><span></span><span></span><span></span></div>
+                  <span class="thumb-label">Incidencias · Cierre semanal</span>
+                </div>
+                <div class="thumb-table">
+                  <div class="thumb-tr th"><span>Empleado</span><span>Tipo</span><span>Estado</span></div>
+                  <div class="thumb-tr"><span>García, M.</span><span><span class="tpill tpill-b">Operativo</span></span><span><span class="tpill tpill-g">OK</span></span></div>
+                  <div class="thumb-tr hl"><span>Torres, R.</span><span><span class="tpill tpill-w">Admin</span></span><span><span class="tpill tpill-g">OK</span></span></div>
+                  <div class="thumb-tr"><span>López, A.</span><span><span class="tpill tpill-b">Operativo</span></span><span><span class="tpill tpill-g">OK</span></span></div>
+                  <div class="thumb-tr"><span>Ramos, K.</span><span><span class="tpill tpill-w">Admin</span></span><span><span class="tpill tpill-w">Rev.</span></span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-header">
+                <h3>Automatización con Apps Script</h3>
+                <span class="project-tag">Automatización</span>
+              </div>
+
+              <p>
+                Web apps y flujos automatizados construidos sobre Google Workspace para consolidar datos
+                operativos, generar reportes periódicos y centralizar la administración de procesos de RRHH
+                e incidencias en empresas con operación semanal y quincenal.
+              </p>
+
+              <ul class="project-list">
+                <li>Lectura, transformación y consolidación de datos desde Google Sheets.</li>
+                <li>Dashboards de KPI con seguimiento de indicadores operativos y de nómina.</li>
+                <li>Web apps de captura, consulta y administración con control de acceso.</li>
+              </ul>
+
+              <div class="tech-tags">
+                <span>Apps Script</span>
+                <span>Sheets</span>
+                <span>HTML</span>
+                <span>JavaScript</span>
+              </div>
+
+              <div class="project-actions">
+                <a class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">Ver demo</a>
+                <a class="btn btn-secondary" href="caso-appsscript.html" target="_blank" rel="noopener noreferrer">Caso de estudio</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Proyecto 3: HACCP -->
+          <article class="project-card reveal">
+            <div class="project-cover">
+              <div class="thumb">
+                <div class="thumb-topbar">
+                  <div class="thumb-dots"><span></span><span></span><span></span></div>
+                  <span class="thumb-label">HACCP · Árbol de decisiones Codex</span>
+                </div>
+                <div class="thumb-tree">
+                  <div class="thumb-node">
+                    <div class="thumb-node-q">P1: ¿Existen medidas de control para este peligro?</div>
+                    <div class="thumb-node-ans"><span class="tans tans-y">Sí →</span><span class="tans tans-n">No → sin PCC</span></div>
+                  </div>
+                  <div class="thumb-node">
+                    <div class="thumb-node-q">P2: ¿Elimina o reduce el peligro a nivel aceptable?</div>
+                    <div class="thumb-node-ans"><span class="tans tans-y">Sí →</span><span class="tans tans-n">No → siguiente</span></div>
+                  </div>
+                  <div class="thumb-node">
+                    <div class="thumb-node-q">P3: ¿Puede la contaminación aparecer en exceso?</div>
+                    <div class="thumb-node-ans"><span class="tans tans-p">✓ PCC identificado</span><span class="tans tans-n">No</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-header">
+                <h3>Sistema HACCP</h3>
+                <span class="project-tag">Inocuidad alimentaria</span>
+              </div>
+
+              <p>
+                Sistema de gestión HACCP para manufactura de alimentos, basado en el Codex Alimentarius
+                y alineado a normativa mexicana. Incluye un asistente de seis pasos para análisis de
+                peligros y determinación de Puntos Críticos de Control (PCC).
+              </p>
+
+              <ul class="project-list">
+                <li>Árbol de decisiones Codex para identificación automática de PCC.</li>
+                <li>Cálculo de riesgo por peligro (severidad × probabilidad) con registro de controles.</li>
+                <li>Interfaz de wizard guiada para equipos sin formación técnica avanzada.</li>
+              </ul>
+
+              <div class="tech-tags">
+                <span>Apps Script</span>
+                <span>JavaScript</span>
+                <span>HACCP</span>
+                <span>Codex Alimentarius</span>
+              </div>
+
+              <div class="project-actions">
+                <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycbx0PLOebNh_Y_ZeOnbeb3P0i47Q3NislsXfHPA40N8Jz2yxOxHRO-dOdGZpa4F2rRdzPw/exec" target="_blank" rel="noopener noreferrer">Ver demo</a>
+                <a class="btn btn-secondary" href="caso-haccp.html" target="_blank" rel="noopener noreferrer">Caso de estudio</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Proyecto 4: WMS -->
+          <article class="project-card reveal">
+            <div class="project-cover">
+              <div class="thumb">
+                <div class="thumb-topbar">
+                  <div class="thumb-dots"><span></span><span></span><span></span></div>
+                  <span class="thumb-label">WMS · Ubicaciones — Zona A</span>
+                </div>
+                <div class="thumb-rack">
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell fefo"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell empty"></div>
+                  <div class="thumb-cell sel"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell empty"></div>
+                  <div class="thumb-cell empty"></div>
+                  <div class="thumb-cell fefo"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell empty"></div>
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell empty"></div>
+                  <div class="thumb-cell fefo"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell occ"><div class="thumb-cell-dot"></div></div>
+                  <div class="thumb-cell empty"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-content">
+              <div class="project-header">
+                <h3>WMS · Gestión de Almacén</h3>
+                <span class="project-tag">Logística</span>
+              </div>
+
+              <p>
+                Sistema de gestión de almacén (WMS) con picking FEFO/FIFO, escaneo QR/NFC,
+                asignación obligatoria de ubicaciones y UI mobile-first orientada a operadores
+                de almacén en manufactura de alimentos.
+              </p>
+
+              <ul class="project-list">
+                <li>Flujo de recepción, almacenamiento y surtimiento con control de ubicaciones.</li>
+                <li>Escaneo QR vía html5-qrcode, compatible con GAS y restricciones de iframe.</li>
+                <li>Diseño Lean/Kanban para reducir errores, esperas y falta de visibilidad.</li>
+              </ul>
+
+              <div class="tech-tags">
+                <span>WMS</span>
+                <span>Apps Script</span>
+                <span>QR / NFC</span>
+                <span>FEFO/FIFO</span>
+              </div>
+
+              <div class="project-actions">
+                <a class="btn btn-primary" href="https://script.google.com/macros/s/AKfycby_EMwjq0AYAm8J6HF4QiETfEJL8-joW_gutf7Gc0YBGRmQAVDng8OO5uZTJUgt08e_NA/exec" target="_blank" rel="noopener noreferrer">Ver demo</a>
+                <a class="btn btn-secondary" href="caso-wms.html" target="_blank" rel="noopener noreferrer">Caso de estudio</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Proceso ── -->
+    <section class="section" id="proceso">
+      <div class="container">
+        <div class="eyebrow reveal">Cómo trabajo</div>
+        <h2 class="section-title reveal">Del problema operativo a una solución funcional</h2>
+        <p class="section-subtitle reveal">
+          Mi enfoque parte del entendimiento del proceso real, no solo del desarrollo técnico.
+          El objetivo es construir herramientas que sí se usen y que generen visibilidad, control y eficiencia.
+        </p>
+
+        <div class="grid process-grid">
+          <div class="process-card reveal">
+            <div class="process-number">01</div>
+            <h3>Diagnóstico del proceso</h3>
+            <p>Analizo el flujo real, los cuellos de botella, la información disponible y el punto exacto donde una solución digital puede generar valor.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">02</div>
+            <h3>Diseño funcional</h3>
+            <p>Defino estructura de datos, lógica de negocio, vistas operativas y prioridades de implementación para asegurar usabilidad y adopción.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">03</div>
+            <h3>Desarrollo e integración</h3>
+            <p>Construyo dashboards, automatizaciones, formularios o sistemas web conectados a la operación, buscando simplicidad y escalabilidad.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">04</div>
+            <h3>Optimización continua</h3>
+            <p>Ajusto métricas, reportes y experiencia de uso para que la herramienta acompañe el crecimiento del proceso sin convertirse en una carga.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Stack ── -->
+    <section class="section" id="stack">
+      <div class="container">
+        <div class="eyebrow reveal">Tecnologías y enfoque</div>
+        <h2 class="section-title reveal">Herramientas con las que construyo soluciones</h2>
+        <p class="section-subtitle reveal">
+          Selecciono la tecnología según el contexto del proceso, velocidad de implementación,
+          facilidad de mantenimiento e impacto operativo esperado.
+        </p>
+
+        <div class="grid tech-grid">
+          <div class="tech-card reveal">
+            <div class="tech-icon">AS</div>
+            <h3>Apps Script</h3>
+            <p>Web apps, automatización, reportes, dashboards, formularios y procesos conectados a Google Workspace.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">AP</div>
+            <h3>AppSheet</h3>
+            <p>Aplicaciones de captura y consulta para procesos internos, con foco en rapidez de implementación.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">JS</div>
+            <h3>JavaScript / Frontend</h3>
+            <p>Interfaces web, visualización de información, experiencia de usuario y demos interactivas.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">DB</div>
+            <h3>SQL / Datos</h3>
+            <p>Modelado de datos, consolidación, lectura de indicadores y soporte para sistemas operativos.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">LV</div>
+            <h3>PHP / Laravel</h3>
+            <p>Desarrollo de sistemas internos con backend estructurado, APIs y paneles administrativos.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">SB</div>
+            <h3>SAP Business One</h3>
+            <p>Contexto de integración operativa y acompañamiento de procesos de manufactura y planificación.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">PA</div>
+            <h3>Power Automate</h3>
+            <p>Flujos de automatización para correo, alertas, seguimiento y conexión entre plataformas.</p>
+          </div>
+          <div class="tech-card reveal">
+            <div class="tech-icon">OP</div>
+            <h3>Operación y mejora</h3>
+            <p>Diseño de soluciones desde la realidad del piso operativo, con enfoque en eficiencia y adopción.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contacto ── -->
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="cta-card reveal">
+          <div class="cta-grid">
+            <div>
+              <div class="eyebrow">Contacto</div>
+              <h2>¿Buscas una solución funcional para un proceso real?</h2>
+              <p>
+                Puedo ayudarte a transformar tareas manuales, falta de visibilidad o flujos dispersos
+                en herramientas digitales útiles, claras y alineadas con la operación.
+              </p>
+
+              <div class="hero-actions" style="margin-top:24px;">
+                <a class="btn btn-primary" href="mailto:jmiguelcastrillom@gmail.com">Escríbeme</a>
+                <a class="btn btn-secondary" href="https://www.linkedin.com/in/ingjosecastrillo/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </div>
+            </div>
+
+            <ul class="contact-list">
+              <li class="contact-item">
+                <div class="contact-label">
+                  <small>Email</small>
+                  <strong>jmiguelcastrillom@gmail.com</strong>
+                </div>
+                <a class="btn btn-secondary" href="mailto:jmiguelcastrillom@gmail.com">Enviar</a>
+              </li>
+              <li class="contact-item">
+                <div class="contact-label">
+                  <small>GitHub</small>
+                  <strong>github.com/JMCMMX</strong>
+                </div>
+                <a class="btn btn-secondary" href="https://github.com/JMCMMX" target="_blank" rel="noopener noreferrer">Abrir</a>
+              </li>
+              <li class="contact-item">
+                <div class="contact-label">
+                  <small>LinkedIn</small>
+                  <strong>Jose Miguel Castrillo</strong>
+                </div>
+                <a class="btn btn-secondary" href="https://www.linkedin.com/in/ingjosecastrillo/" target="_blank" rel="noopener noreferrer">Abrir</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <span>© <span id="year"></span> José Miguel Castrillo. Todos los derechos reservados.</span>
+      <span>Portafolio desarrollado para GitHub Pages</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Año footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ── Menú móvil
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuToggle?.addEventListener("click", () => {
+      menuToggle.classList.toggle("active");
+      mobileMenu.classList.toggle("open");
+      document.body.classList.toggle("menu-open");
+    });
+
+    mobileMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        menuToggle.classList.remove("active");
+        mobileMenu.classList.remove("open");
+        document.body.classList.remove("menu-open");
+      });
+    });
+
+    // ── Reveal con IntersectionObserver (sin GSAP, 100% responsivo)
+    const revealEls = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Pequeño stagger basado en posición en el DOM
+          const delay = Math.min(i * 30, 200);
+          setTimeout(() => {
+            entry.target.classList.add("visible");
+          }, delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Header sombra al scroll
+    const header = document.querySelector(".site-header");
+    window.addEventListener("scroll", () => {
+      header.style.boxShadow = window.scrollY > 10
+        ? "0 12px 40px rgba(0,0,0,.22)"
+        : "none";
+    }, { passive: true });
+
+    // ── Canvas de partículas — reducido en móvil
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    let animId;
+
+    function isMobile() { return window.innerWidth < 640; }
+    function particleCount() { return isMobile() ? 22 : 48; }
+    function connectionDist() { return isMobile() ? 80 : 120; }
+
+    function resizeCanvas() {
+      const dpr = Math.min(devicePixelRatio, 2); // cap a 2× para rendimiento
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function createParticles() {
+      const count = particleCount();
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2 + 0.8
+      }));
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const dist = connectionDist();
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > window.innerWidth)  p.vx *= -1;
+        if (p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(140,200,255,0.28)";
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < dist) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(110,180,255,${0.08 * (1 - d / dist)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(drawParticles);
+    }
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        cancelAnimationFrame(animId);
+        resizeCanvas();
+        createParticles();
+        drawParticles();
+      }, 200);
+    }, { passive: true });
+
+    // Pausar canvas cuando la pestaña no es visible (ahorro batería móvil)
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animId);
+      } else {
+        drawParticles();
+      }
+    });
+
+    resizeCanvas();
+    createParticles();
+    drawParticles();
+  </script>
+</body>
+</html>
